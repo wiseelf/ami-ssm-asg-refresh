@@ -87,9 +87,8 @@ resource "aws_imagebuilder_infrastructure_configuration" "lab" {
     http_tokens                 = "required"
   }
 
-  resource_tags = merge(local.common_tags, {
-    Name = "${var.name}-imagebuilder"
-  })
+  # Image Builder reserves the Name key for build/test instance resource tags.
+  resource_tags = local.common_tags
 }
 
 resource "aws_imagebuilder_distribution_configuration" "lab" {
