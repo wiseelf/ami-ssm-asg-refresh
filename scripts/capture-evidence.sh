@@ -9,7 +9,7 @@ region="$(aws_region)"
 parameter_name="$(tf_output ami_parameter_name)"
 asg_name="$(tf_output asg_name)"
 pipeline_arn="$(tf_output image_pipeline_arn)"
-timestamp="$(date --utc +%Y%m%dT%H%M%SZ)"
+timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
 evidence_dir="${REPO_DIR}/evidence/${timestamp}"
 mkdir -p "${evidence_dir}"
 
