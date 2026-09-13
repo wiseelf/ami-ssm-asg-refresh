@@ -1,0 +1,26 @@
+name: VerifyReleaseMarker
+description: Verify the built AMI, with an explicit negative-test switch
+schemaVersion: 1.0
+parameters:
+  - ExpectedReleaseId:
+      type: string
+      default: v1
+  - ForceFailure:
+      type: string
+      default: "false"
+phases:
+  - name: test
+    steps:
+      - name: VerifyOperatingSystemAndMarker
+        action: ExecuteBash
+        inputs:
+          commands:
+            - |
+              set -euo pipefail
+              test "$(. /etc/os-release && printf '%s' "$ID")" = "amzn"
+              grep -Fx "release={{ ExpectedReleaseId }}" /etc/asg-refresh-lab-release
+              systemctl is-enabled --quiet amazon-ssm-agent
+              if [ "{{ ForceFailure }}" = "true" ]; then
+                echo "Deliberate test failure requested" >&2
+                exit 42
+              fi

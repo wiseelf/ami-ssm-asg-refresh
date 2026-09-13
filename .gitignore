@@ -1,0 +1,12 @@
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfplan
+terraform.tfvars
+lambda/rollout.zip
+__pycache__/
+*.py[cod]
+.DS_Store
+evidence/
