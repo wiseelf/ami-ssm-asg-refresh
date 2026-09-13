@@ -38,6 +38,11 @@ variable "instance_type" {
   description = "Small x86 instance type for ASG, build, and test instances."
   type        = string
   default     = "t3.micro"
+
+  validation {
+    condition     = contains(["t2.micro", "t3.micro", "t3.small"], var.instance_type)
+    error_message = "instance_type must be one of the supported small x86 types: t2.micro, t3.micro, or t3.small."
+  }
 }
 
 variable "desired_capacity" {

@@ -18,6 +18,7 @@ phases:
             - |
               set -euo pipefail
               test "$(. /etc/os-release && printf '%s' "$ID")" = "amzn"
+              test "$(. /etc/os-release && printf '%s' "$VERSION_ID")" = "2023"
               grep -Fx "release={{ ExpectedReleaseId }}" /etc/asg-refresh-lab-release
               systemctl is-enabled --quiet amazon-ssm-agent
               if [ "{{ ForceFailure }}" = "true" ]; then

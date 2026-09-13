@@ -177,10 +177,12 @@ def process_event(
 
     instances = _current_instances(settings.asg_name, clients)
     instance_ids = [item["InstanceId"] for item in instances]
+    instance_amis = {item["InstanceId"]: item["ImageId"] for item in instances}
     if instances and all(item["ImageId"] == target_ami for item in instances):
         return {
             "action": "already-current",
             "event_id": _event_id(event),
+            "instance_amis": instance_amis,
             "instance_ids": instance_ids,
             "parameter_version": parameter["Version"],
             "target_ami": target_ami,
@@ -193,6 +195,8 @@ def process_event(
             "active_instance_refresh_id": active["InstanceRefreshId"],
             "active_status": active["Status"],
             "event_id": _event_id(event),
+            "instance_amis": instance_amis,
+            "instance_ids": instance_ids,
             "parameter_version": parameter["Version"],
             "target_ami": target_ami,
         }
@@ -215,6 +219,8 @@ def process_event(
             return {
                 "action": "deferred-race",
                 "event_id": _event_id(event),
+                "instance_amis": instance_amis,
+                "instance_ids": instance_ids,
                 "parameter_version": parameter["Version"],
                 "target_ami": target_ami,
             }
@@ -225,6 +231,7 @@ def process_event(
         "event_id": _event_id(event),
         "instance_refresh_id": response["InstanceRefreshId"],
         "parameter_version": parameter["Version"],
+        "previous_instance_amis": instance_amis,
         "previous_instance_ids": instance_ids,
         "target_ami": target_ami,
     }
